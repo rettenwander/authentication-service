@@ -7,17 +7,26 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-
 const app = express();
 
 
-app.use('/register', bodyParser.json());
-app.use('/register', require('./controller/register'));
+app.use(bodyParser.json());
+app.use('/register', require('./controller/register/register'));
+
+
+
+/** 
+ * error handler
+*/
+
+app.use(require('./errorHandler/internal'));
+app.use(require('./errorHandler/notFound'));
 
 
 const serverOptions = {
   key: fs.readFileSync(path.join(__dirname, '../certificate/key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, '../certificate/certificate.pem')),
+  cert: fs.readFileSync(path.join(__dirname, '../certificate/cert.pem')),
+  passphrase: 'test',
 };
 
 
